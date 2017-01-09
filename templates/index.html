@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Geoloc</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <form action="/" method="post">
+                <input class="form-control" name="search" placeholder="Search Here" autocomplete="off" autofocus="autofocus" type="text">
+        </div>
+
+
+        <div class="col-md-1">
+            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> GO</button>
+        </div>
+         </form>
+      </div>
+
+    <br>
+
+<div class="row">
+    <div class="col-md-4 col-sm-4">
+        <table class="table table-striped">
+        <tr><th>X</th><th>Y</th></tr>
+            {% for result in results %}
+                <tr><td>{{ result[0] }}</td><td>{{ result[1] }}</td></tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+</div>
+
+
+</body>
+</html>
