@@ -21,9 +21,10 @@ def create_data_dict(file, ref_header, delimiter=','):
         result[key] = row
     return result
 
+# Create a dict containing the CSV data using OBJECTID as the key
 townlands_dict = create_data_dict('townlands.csv', 'OBJECTID')
 
-
+# Create a second dict with the English Name as the key and the OBJECTIDs as a list of values (deals with duplicate townland names)
 def create_id_dict(data_dict):
     result = {}
     for key, value in data_dict.iteritems():
@@ -35,9 +36,10 @@ def create_id_dict(data_dict):
             result[value['English_Name']].append(key)
     return result
 
+
 id_dict = create_id_dict(townlands_dict)
 
-
+# Search the id_dictionary for the user inputted search term(s), stop at first match, output a list of matching OBJECTIDs
 def search_id_dict(dict, searchTermList):
     for term in searchTermList:
         try:
@@ -47,7 +49,7 @@ def search_id_dict(dict, searchTermList):
             continue
     return []
 
-
+# Fetch the coordinates from the data_dictionary that match the OBJECTIDs from the previous search
 def retrieve_from_data_dict(list, data_dict):
     coord_list = []
     for i in list:
@@ -61,7 +63,7 @@ def retrieve_from_data_dict(list, data_dict):
             continue
     return coord_list
 
-
+# Prepare the search terms from the form as a list, call the required function, render the html
 @app.route('/', methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':
