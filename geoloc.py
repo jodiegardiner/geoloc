@@ -69,7 +69,7 @@ def search():
     if request.method == 'POST':
         query = str(request.form.get('search'))
         query = query.upper()
-        query = filter(None, re.split("[, \-!?:]+", query))
+        query = query.split(', ')
         returned_id_list = search_id_dict(id_dict, query)
         if returned_id_list == []:
             flash("No match for those search terms!")
