@@ -1,12 +1,14 @@
 from __future__ import print_function
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash, redirect
 import os
+import re
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 APP_STATIC = os.path.join(APP_ROOT, 'static')
 
 
 app = Flask(__name__)
+app.secret_key = 'f65gh099x'
 
 
 def create_data_dict(file, ref_header, delimiter=','):
@@ -52,7 +54,8 @@ def retrieve_from_data_dict(list, data_dict):
         try:
             X = data_dict[i]['X']
             Y = data_dict[i]['Y']
-            coords = X, Y
+            name = data_dict[i]['English_Name']
+            coords = X, Y, name
             coord_list.append(coords)
         except KeyError, error:
             continue
@@ -64,12 +67,15 @@ def search():
     if request.method == 'POST':
         query = str(request.form.get('search'))
         query = query.upper()
-        query = query.split(',')
+        query = filter(None, re.split("[, \-!?:]+", query))
         returned_id_list = search_id_dict(id_dict, query)
-        results = retrieve_from_data_dict(returned_id_list, townlands_dict)
+        if returned_id_list == []:
+            flash("No match for those search terms!")
+            return redirect('/')
+        else:
+            results = retrieve_from_data_dict(returned_id_list, townlands_dict)
     else:
         results = ''
-    print(results)
     return render_template("index.html", results=results)
 
 
